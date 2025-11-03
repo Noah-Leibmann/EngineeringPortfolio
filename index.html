@@ -1,26 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Engineering Portfolio</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <!-- Header content will be included here -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <h1 class="brand">My Engineering Portfolio</h1>
+            <nav class="site-nav" aria-label="Primary">
+                <a href="#video">Showcase</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
     </header>
-    
-    <main>
-        <h1>Welcome to My Portfolio</h1>
-        <p>This is a showcase of my work and projects.</p>
-        <!-- Additional content will be added here -->
+
+    <main class="container main-grid">
+        <section id="video" class="media-card">
+            <div class="media-wrap">
+                <video controls poster="TrackleteThumbnail.png" class="responsive-video">
+                    <source src="CS Project .mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <aside class="description">
+                <h2>Project Demo</h2>
+                <p>
+                    This video demonstrates my project Tracklete. Included is a walkthrough of the AI Trainer interface which is capable of supplying accurate, modern data to athletes and coaches. Additionally, the video showcases the speedometer application for athletes to track their performance and progress over time.
+                </p>
+                <ul>
+                    <li>Role: Frontend Engineer</li>
+                    <li>Stack: HTML, CSS, JS</li>
+                    <li>Focus: Responsive layout, accessibility, performance</li>
+                </ul>
+                <p class="muted">Tip: click any image in the gallery to view it larger.</p>
+            </aside>
+        </section>
+
+        <section id="gallery" class="gallery-section">
+            <h2>Image Gallery</h2>
+            <div class="gallery-grid">
+                <img src="https://picsum.photos/id/1015/600/400" alt="Mountain ridge at sunrise" loading="lazy" tabindex="0" data-description="Mountain ridge with golden sunrise and soft morning mist.">
+                <img src="https://picsum.photos/id/1025/600/400" alt="Forest path" loading="lazy" tabindex="0" data-description="A winding forest path framed by tall pines and dappled light.">
+                <img src="https://picsum.photos/id/1035/600/400" alt="Calm lake" loading="lazy" tabindex="0" data-description="A calm lake reflecting the clouds and surrounding trees.">
+                <img src="https://picsum.photos/id/1045/600/400" alt="Desert dunes" loading="lazy" tabindex="0" data-description="Sunlit sand dunes with smooth, flowing ridges.">
+                <img src="https://picsum.photos/id/1055/600/400" alt="Coastal cliffs" loading="lazy" tabindex="0" data-description="Dramatic coastal cliffs dropping into a deep blue sea.">
+                <img src="https://picsum.photos/id/1065/600/400" alt="City skyline" loading="lazy" tabindex="0" data-description="City skyline at dusk, lights beginning to twinkle.">
+            </div>
+        </section>
+
+        <section id="contact" class="contact-card">
+            <h2>Contact</h2>
+            <p>If you'd like to see source code, email me at <a href="mailto:noah.leibmann@gmail.com">noah.leibmann@gmail.com</a>.</p>
+        </section>
     </main>
-    
-    <footer>
-        <!-- Footer content will be included here -->
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; <span id="year"></span> My Engineering Portfolio</p>
+        </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <!-- Lightbox modal -->
+    <div id="lightbox" class="lightbox" aria-hidden="true">
+        <button class="lightbox-close" aria-label="Close">×</button>
+        <div class="lightbox-inner">
+          <img class="lightbox-img" alt="Expanded gallery image">
+          <div class="lightbox-caption" id="lightbox-caption" role="status" aria-live="polite"></div>
+        </div>
+    </div>
+
+    <script>
+        // small scripts: update year and enable lightbox for gallery images
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = lightbox.querySelector('.lightbox-img');
+            const lightboxCaption = lightbox.querySelector('.lightbox-caption');
+            const closeBtn = lightbox.querySelector('.lightbox-close');
+
+        function openLightbox(src, alt, desc) {
+            lightboxImg.src = src;
+            lightboxImg.alt = alt || '';
+            lightboxCaption.textContent = desc || '';
+            lightbox.style.display = 'flex';
+            lightbox.setAttribute('aria-hidden', 'false');
+            // move focus to close button for easy keyboard exit
+            closeBtn.focus();
+        }
+
+        function closeLightbox() {
+            lightbox.style.display = 'none';
+            lightbox.setAttribute('aria-hidden', 'true');
+            lightboxImg.src = '';
+            lightboxCaption.textContent = '';
+        }
+
+        document.querySelectorAll('.gallery-grid img').forEach(img => {
+            img.style.cursor = 'zoom-in';
+            const desc = img.dataset.description || img.alt || '';
+            img.addEventListener('click', () => openLightbox(img.src, img.alt, desc));
+            img.addEventListener('keydown', (e) => { if (e.key === 'Enter') openLightbox(img.src, img.alt, desc); });
+        });
+
+        closeBtn.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+    </script>
 </body>
 </html>
